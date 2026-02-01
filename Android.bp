@@ -1,0 +1,121 @@
+// rk_screenshot - High-Performance Screenshot Tool
+// Compiled with AOSP build system (Soong)
+
+// Rockchip RGA library (2D graphics acceleration)
+cc_prebuilt_library_shared {
+    name: "librga",
+    srcs: ["prebuilts/arm64/librga.so"],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+}
+
+// Rockchip MPP library (Media Process Platform - JPEG/H.264 encoder)
+cc_prebuilt_library_shared {
+    name: "libmpp",
+    srcs: ["prebuilts/arm64/libmpp.so"],
+    compile_multilib: "64",
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+}
+
+cc_library_shared {
+    name: "librk_screenshot",
+    
+    compile_multilib: "64",
+    
+    srcs: [
+        "src/rk_screenshot.cpp",
+        "src/rk_surfaceflinger_capture.cpp",
+        "src/rk_rga_processor.cpp",
+        "src/rk_mpp_encoder.cpp",
+        "src/rk_dmabuf_utils.cpp",
+    ],
+    
+    local_include_dirs: [
+        "include",
+        "include/librga",
+        "include/mpp",
+    ],
+    
+    shared_libs: [
+        // AOSP system libraries
+        "libgui",
+        "libui",
+        "libbinder",
+        "libutils",
+        "liblog",
+        "libcutils",
+        "libnativewindow",
+        
+        // Rockchip libraries
+        "librga",
+        "libmpp",
+    ],
+    
+    cflags: [
+        "-Wall",
+        "-Wno-unused-parameter",
+        "-O3",
+    ],
+    
+    header_libs: [
+        "libui_headers",
+        "libgui_headers",
+        "libnativewindow_headers",
+    ],
+    
+    export_include_dirs: [
+        "include",
+    ],
+}
+
+cc_binary {
+    name: "rk_screenshot_test",
+    
+    compile_multilib: "64",
+    
+    srcs: [
+        "test/rk_screenshot_test.cpp",
+    ],
+    
+    shared_libs: [
+        "librk_screenshot",
+        "liblog",
+        "libutils",
+    ],
+    
+    cflags: [
+        "-Wall",
+        "-Wno-unused-parameter",
+    ],
+}
+
+cc_binary {
+    name: "rk_screenshot",
+    
+    compile_multilib: "64",
+    
+    srcs: [
+        "tools/rk_screenshot.cpp",
+    ],
+    
+    local_include_dirs: [
+        "include",
+    ],
+    
+    shared_libs: [
+        "librk_screenshot",
+        "liblog",
+        "libutils",
+    ],
+    
+    cflags: [
+        "-Wall",
+        "-Wno-unused-parameter",
+    ],
+}

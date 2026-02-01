@@ -1,0 +1,54 @@
+# Build outputs
+build/
+out/
+*.o
+*.a
+*.so
+*.so.*
+
+# CMake (legacy, now using AOSP Soong)
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+Makefile
+
+# Test outputs
+test_*.jpg
+test_*.rgba
+test_*.raw
+*.b64
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Archives
+*.tgz
+*.tar.gz
+*.zip
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+
+# AOSP environment
+# Rockchip prebuilt libraries (exclude files, keep structure)
+prebuilts/**/*
+!prebuilts/**/.gitkeep
+
+# Rockchip vendor headers (exclude files, keep structure)
+include/mpp/**/*
+!include/mpp/.gitkeep
+include/librga/**/*
+!include/librga/.gitkeep
+
+# dev
+.github/copilot-instructions.md
+sync.sh
